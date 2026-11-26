@@ -9,15 +9,18 @@ const ENTRY =
   "Exceeds Expectations: you delegated your entire job to me, then listed 'leadership' on your résumé.";
 
 // Gate self-check: 1-140 chars, non-blank, exactly one line.
-if (ENTRY.length < 1 || ENTRY.length > 140) {
-  throw new Error(`entry is ${ENTRY.length} chars, must be 1-140`);
+function checkGate(text) {
+  if (text.length < 1 || text.length > 140) {
+    throw new Error(`entry is ${text.length} chars, must be 1-140`);
+  }
+  if (text.trim().length === 0) {
+    throw new Error("entry must not be only whitespace");
+  }
+  if (text.includes("\n") || text.includes("\r")) {
+    throw new Error("entry must be a single line");
+  }
 }
-if (ENTRY.trim().length === 0) {
-  throw new Error("entry must not be only whitespace");
-}
-if (ENTRY.includes("\n") || ENTRY.includes("\r")) {
-  throw new Error("entry must be a single line");
-}
+checkGate(ENTRY);
 
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 mkdirSync(outDir, { recursive: true });
